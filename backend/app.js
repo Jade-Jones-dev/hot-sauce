@@ -3,6 +3,20 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+const mongoose = require('mongoose');
+
+const userRoutes = require('./routes/user')
+
+mongoose.connect('mongodb+srv://jade:firstone@cluster0.gtwrqo6.mongodb.net/test')
+  .then(() => {
+    console.log('Successfully connected to MongoDB Atlas!');
+  })
+  .catch((error) => {
+    console.log('Unable to connect to MongoDB Atlas!');
+    console.error(error);
+  });
+
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -29,5 +43,6 @@ app.use((req, res, next) => {
   console.log('Response sent successfully!');
 });
 
+app.use('/api/auth', userRoutes)
 module.exports = app;
 
