@@ -1,22 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
-//a simple if/else to check if email already exists in db
-User.findOne({ email: req.body.email }, function(err, user) {
-  if(err) {
-     //handle error here
-  }
-
-
-   //if a user was found, that means the user's email matches the entered email
-   if (user) {
-    var err = new Error('A user with that email has already registered. Please use a different email..')
-   err.status = 400;
-   return next(err);
-} else {
-  //code if no user with entered email was found
-}
-
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(
