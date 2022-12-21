@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const path = require("path");
 
 const userRoutes = require('./routes/user');
+// const sauceRoutes = require('/routes/sauce');
 
 
 const app = express();
@@ -33,6 +34,7 @@ mongoose.connect('mongodb+srv://jade:firstone@cluster0.gtwrqo6.mongodb.net/test'
 app.use(express.json());
 
 app.use('/api/auth', userRoutes);
+// app.use('api/auth', sauceRoutes);
 
 module.exports = app;
 
