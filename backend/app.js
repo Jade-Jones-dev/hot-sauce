@@ -18,7 +18,7 @@ mongoose.connect('mongodb+srv://jade:firstone@cluster0.gtwrqo6.mongodb.net/test'
     console.error(error);
   });
 
-  app.use((req, res, next) => {
+app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Access-Control-Allow-Headers",
