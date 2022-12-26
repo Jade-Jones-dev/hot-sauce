@@ -1,8 +1,34 @@
 const Sauce = require('../models/sauce');
+const fs = require('fs');
 
-// router.get('/', auth, sauceCtrl.getAllSauces);
-// router.post('/', auth, sauceCtrl.createSauce);
-// router.get('/:id', auth, sauceCtrl.getOneSauce);
+// getAllSauces
+exports.getAllSauces = (req, res, next) => {
+    Sauce.find()
+    .then((sauces) => {
+        res.status(200).json(sauces);
+    })
+    .catch((error) => {
+        res.status(400).json({
+            error: error,
+        });
+    });
+};
+
+// getOneSauce
+exports.getOneSauce = (req, res, next) => {
+	Sauce.findOne({
+		_id: req.params.id,
+	})
+		.then((sauce) => {
+			res.status(200).json(sauce);
+		})
+		.catch((error) => {
+			res.status(404).json({
+				error: error,
+			});
+		});
+};
+// createSauce
 // router.put('/:id', auth, sauceCtrl.modifySauce);
 // router.delete('/:id', auth, sauceCtrl.deleteSauce);
 // like a sauce
