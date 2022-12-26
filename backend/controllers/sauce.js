@@ -1,3 +1,2 @@
-// list all sauces
-// list one
-// create a sauce
+const Sauce = require('../models/sauce');
+
