@@ -9,6 +9,7 @@ const sauceRoutes = require('./routes/sauce');
 
 const app = express();
 
+
 mongoose.connect('mongodb+srv://jade:firstone@cluster0.gtwrqo6.mongodb.net/test')
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
@@ -18,7 +19,7 @@ mongoose.connect('mongodb+srv://jade:firstone@cluster0.gtwrqo6.mongodb.net/test'
     console.error(error);
   });
 
-app.use(express.json());
+
 
 app.use((req, res, next) => {
   // res.status(200).json({error: error})
@@ -33,11 +34,12 @@ app.use((req, res, next) => {
     );
     next();
   });
-  
 
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(express.json());
 
+app.use("/images", express.static(path.join(__dirname, "images"))); 
 app.use('/api/auth', userRoutes);
+
 app.use('/api/sauces', sauceRoutes);
 
 module.exports = app;
