@@ -18,7 +18,7 @@ exports.getAllSauces = (req, res, next) => {
 // getOneSauce
 exports.getOneSauce = (req, res, next) => {
 	Sauce.findOne({
-		_id: req.params.id,
+		_id: req.params.id
 	})
 	.then(
 		(sauce) => {
@@ -26,7 +26,7 @@ exports.getOneSauce = (req, res, next) => {
 		})
 		.catch(
 			(error) => {
-			res.status(400).json({
+			res.status(404).json({
 				error: error,
 			});
 		});
@@ -35,7 +35,7 @@ exports.getOneSauce = (req, res, next) => {
 exports.createSauce = (req, res, next) => {
 	req.body.sauce = JSON.parse(req.body.sauce);
 	const url = req.protocol + "://" + req.get("host");
-	console.log('createSauce is working')
+	// console.log('createSauce is working')
 	const sauce = new Sauce({
 		userId: req.body.sauce.userId,
 		name: req.body.sauce.name,
@@ -44,12 +44,9 @@ exports.createSauce = (req, res, next) => {
 		mainPepper: req.body.sauce.mainPepper,
 		imageUrl: url + "/images/" + req.file.filename,
 		heat: req.body.sauce.heat,
-		likes: 0,
-		dislikes: 0,
-		userLiked: [],
-		userDisliked:[],
+		
 	})
-	console.log(sauce);
+	// console.log(sauce);
 	sauce.save()
 	.then(() =>{
 		res.status(201).json({
