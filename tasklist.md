@@ -21,9 +21,9 @@ Do:
 <!-- Auth middleware + list all sauces -->
 <!-- Multer + Create a sauce -->
 <!-- show one sauce -->
-Delete a sauce
-Edit a sauce
+<!-- Delete a sauce -->
+<!-- Edit a sauce -->
 Like/unLike a sauce
-In each of theses steps: first do the route, then an empty function in the controller, place a console log inside the function. if the console.log display in the terminal, you continue in the controller
+
 
 https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
