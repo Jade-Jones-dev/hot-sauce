@@ -84,6 +84,10 @@ exports.deleteSauce = (req, res, next) => {
 exports.modifySauce = (req, res, next) => {
 	let sauce = new Sauce({ _id: req.params._id });
 	if (req.file) {
+		// unlink the image file to the sauce
+		
+		// delete the image
+		// add new image
 		const url = req.protocol + "://" + req.get("host");
 		req.body.sauce = JSON.parse(req.body.sauce);
 		sauce = {
