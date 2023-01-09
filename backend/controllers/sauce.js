@@ -82,48 +82,74 @@ exports.deleteSauce = (req, res, next) => {
 // router.put('/:id', auth, sauceCtrl.modifySauce);
 
 exports.modifySauce = (req, res, next) => {
-	let sauce = new Sauce({ _id: req.params._id });
-	if (req.file) {
-		// unlink the image file to the sauce
-		
-		// delete the image
-		// add new image
-		const url = req.protocol + "://" + req.get("host");
-		req.body.sauce = JSON.parse(req.body.sauce);
-		sauce = {
-		_id: req.params.id,
-		name: req.body.sauce.name,
-        manufacturer: req.body.sauce.manufacturer,
-		description: req.body.sauce.description,
-		mainPepper: req.body.sauce.mainPepper,
-		imageUrl: url + "/images/" + req.file.filename,
-		heat: req.body.sauce.heat,
-		userId: req.body.sauce.userId,
-		};
-	} else {
-		sauce = {
-        _id: req.params.id,
-		name: req.body.name,
-        manufacturer: req.body.manufacturer,
-		description: req.body.description,
-		mainPepper: req.body.mainPepper,
-		imageUrl: req.body.imageUrl,
-		heat: req.body.heat,
-		userId: req.body.userId,
-		};
-	}
-	Sauce.updateOne({ _id: req.params.id }, sauce)
-		.then(() => {
-			res.status(201).json({
-				message: "Sauce updated successfully!",
-			});
-		})
-		.catch((error) => {
-			res.status(400).json({
-				error: error,
-			});
-		});
-};
+
+	let sauceObject = {};
+	req.file ? (
+		Sauce.findOne({_id: req.params.id})
+		.then((sauce) => {
+		const filename = sauce.imageUrl.split("/images/")[1];
+		fs.unlink("images/" + filename)}),
+	  sauceObject = {
+		...JSON.parse(req.body.sauce),
+		imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+	  }
+	) : ( sauceObject = {...req.body}  )
+	Sauce.updateOne({_id: req.params.id},{...sauceObject,_id: req.params.id})
+	  .then(() => res.status(200).json({message: 'Sauce has been updated'}))
+	  .catch((error) => res.status(400).json({error}))
+  }
+
+// exports.modifySauce = (req, res, next) => {
+// 	let sauce = new Sauce({ _id: req.params._id });
+// 	if (req.file) {
+// 		// unlink the image file to the sauce
+// 		Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+// 			const filename = sauce.imageUrl.split("/images/")[1];
+// 			fs.unlink("images/" + filename)
+// 		});
+// 		// delete the image
+// 		// add new image
+// 		const url = req.protocol + "://" + req.get("host");
+// 		req.body.sauce = JSON.parse(req.body.sauce);
+// 		sauce = {
+// 		_id: req.params.id,
+// 		name: req.body.sauce.name,
+//         manufacturer: req.body.sauce.manufacturer,
+// 		description: req.body.sauce.description,
+// 		mainPepper: req.body.sauce.mainPepper,
+// 		imageUrl: url + "/images/" + req.file.filename,
+// 		heat: req.body.sauce.heat,
+// 		userId: req.body.sauce.userId,
+// 		};
+// 	} else if(!req.file){
+// 		sauce = {
+//         _id: req.params.id,
+// 		name: req.body.name,
+//         manufacturer: req.body.manufacturer,
+// 		description: req.body.description,
+// 		mainPepper: req.body.mainPepper,
+// 		imageUrl: req.body.imageUrl,
+// 		heat: req.body.heat,
+// 		userId: req.body.userId,
+// 		};
+// 	}
+// 	Sauce.updateOne({ _id: req.params.id }, sauce)
+// 		.then(() => {
+// 			res.status(201).json({
+// 				message: "Sauce updated successfully!",
+// 			});
+// 		})
+// 		.catch((error) => {
+// 			res.status(400).json({
+// 				error: error,
+// 			});
+// 		});
+// };
+
+
+
+
+
 
 // like a sauce
 // dislike a sauce
