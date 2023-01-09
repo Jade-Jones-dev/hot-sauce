@@ -147,9 +147,39 @@ exports.modifySauce = (req, res, next) => {
 // };
 
 
-
-
-
-
 // like a sauce
+
+exports.likeSauce = (req, res, next) => {
+	let user = req.body.userId
+
+	Sauce.findOne({ _id: req.params.id })
+	  .then((sauce) => {
+		//If user has not yet liked 
+		if (req.body.like === 1) {
+			sauce.usersLiked.push(user);
+			sauce.likes+1;
+		}
+		  // if user has not yet disliked
+		  if (req.body.like === -1) {
+			sauce.usersDisliked.push(user);
+			sauce.dislikes+1;
+		}
+		//If user has liked sauce
+		if (sauce.usersLiked.includes(user)) {
+		  sauce.usersLiked.splice(sauce.usersLiked.indexOf(user), 1);
+		  sauce.likes-1;
+		}
+		// if user has disliked sauce
+		if (sauce.usersDisliked.includes(user)) {
+		  sauce.usersDisliked.splice(
+			sauce.usersDisliked.indexOf(user), 1);
+		  sauce.dislikes-1;
+		}
+		sauce
+		  .save()
+		  .then((sauce) => res.status(200).json(sauce))
+		  .catch((error) => res.status(400).json({ error }));
+	  })
+  };
+
 // dislike a sauce
