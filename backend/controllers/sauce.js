@@ -2,40 +2,30 @@ const Sauce = require('../models/sauce');
 const fs = require('fs');
 
 // getAllSauces
+
 exports.getAllSauces = (req, res, next) => {
-    Sauce.find().then(
-		(sauces) => {
-        res.status(200).json(sauces);
-    })
-    .catch(
-		(error) => {
-        res.status(400).json({
-            error: error,
-        });
+    Sauce.find()
+	.then((sauces) => {res.status(200).json(sauces);
+	})
+    .catch((error) => {res.status(400).json({error: error,});
     });
 }
 
 // getOneSauce
+
 exports.getOneSauce = (req, res, next) => {
-	Sauce.findOne({
-		_id: req.params.id
+	Sauce.findOne({_id: req.params.id})
+	.then((sauce) => {res.status(200).json(sauce);
 	})
-	.then(
-		(sauce) => {
-			res.status(200).json(sauce);
-		})
-		.catch(
-			(error) => {
-			res.status(404).json({
-				error: error,
-			});
-		});
+	.catch((error) => {res.status(404).json({ error: error });
+	});
 };
+
 // createSauce
+
 exports.createSauce = (req, res, next) => {
 	req.body.sauce = JSON.parse(req.body.sauce);
 	const url = req.protocol + "://" + req.get("host");
-	// console.log('createSauce is working')
 	const sauce = new Sauce({
 		userId: req.body.sauce.userId,
 		name: req.body.sauce.name,
@@ -43,44 +33,68 @@ exports.createSauce = (req, res, next) => {
 		description: req.body.sauce.description,
 		mainPepper: req.body.sauce.mainPepper,
 		imageUrl: url + "/images/" + req.file.filename,
-		heat: req.body.sauce.heat,
-		
-	})
-	// console.log(sauce);
+		heat: req.body.sauce.heat,	
+	});
 	sauce.save()
-	.then(() =>{
-		res.status(201).json({
-			message: "Sauce saved successfully",
-		});
+	.then(() => {res.status(201).json({ message: "Sauce saved successfully"});
 	})
-	.catch((error) =>{
-		res.status(400).json({
-			error: error,
-		})
+	.catch((error) => {res.status(400).json({ error: error,})
 	})
 }
 
+// delete a sauce
+
 exports.deleteSauce = (req, res, next) => {
-	Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+	Sauce.findOne({ _id: req.params.id })
+	.then((sauce) => {
 		const filename = sauce.imageUrl.split("/images/")[1];
 		fs.unlink("images/" + filename, () => {
 			Sauce.deleteOne({ _id: req.params.id })
-				.then(() => {
-					res.status(200).json({
-						message: "Deleted!",
-					});
+			.then(() => {
+				res.status(200).json({ message: "Deleted!"});
 				})
 				.catch((error) => {
-					res.status(400).json({
-						error: error,
-					});
+					res.status(400).json({ error: error,});
 				});
 		});
 	});
 };
 
-// router.put('/:id', auth, sauceCtrl.modifySauce);
+// like a sauce
 
+exports.likeSauce = (req, res, next) => {
+	let user = req.body.userId
+
+	Sauce.findOne({ _id: req.params.id })
+	  .then((sauce) => {
+		//If user has not yet liked 
+		if (!sauce.usersLiked.includes(user)) {
+			sauce.usersLiked.push(user);
+			sauce.likes+1;
+		}
+		// if user has not yet disliked
+		if (!sauce.usersDisliked.includes(user)) {
+			sauce.usersDisliked.push(user);
+			sauce.dislikes+1;
+		}
+		//If user has liked sauce
+		if (sauce.usersLiked.includes(user)) {
+		  	sauce.usersLiked.splice(sauce.usersLiked.indexOf(user), 1);
+		  	sauce.likes-1;
+		}
+		// if user has disliked sauce
+		if (sauce.usersDisliked.includes(user)) {
+		  	sauce.usersDisliked.splice(
+			sauce.usersDisliked.indexOf(user), 1);
+		  	sauce.dislikes-1;
+		}
+		sauce.save()
+		.then((sauce) => res.status(200).json({sauce}))
+		.catch((error) => res.status(400).json({ error: error }));
+	  })
+  };
+
+// modify sauce
 exports.modifySauce = (req, res, next) => {
 
 	let sauceObject = {};
@@ -147,38 +161,5 @@ exports.modifySauce = (req, res, next) => {
 // };
 
 
-// like a sauce
 
-exports.likeSauce = (req, res, next) => {
-	let user = req.body.userId
-
-	Sauce.findOne({ _id: req.params.id })
-	  .then((sauce) => {
-		//If user has not yet liked 
-		if (!sauce.usersLiked.includes(user)) {
-			sauce.usersLiked.push(user);
-			sauce.likes+1;
-		}
-		// if user has not yet disliked
-		if (!sauce.usersDisliked.includes(user)) {
-			sauce.usersDisliked.push(user);
-			sauce.dislikes+1;
-		}
-		//If user has liked sauce
-		if (sauce.usersLiked.includes(user)) {
-		  	sauce.usersLiked.splice(sauce.usersLiked.indexOf(user), 1);
-		  	sauce.likes-1;
-		}
-		// if user has disliked sauce
-		if (sauce.usersDisliked.includes(user)) {
-		  	sauce.usersDisliked.splice(
-			sauce.usersDisliked.indexOf(user), 1);
-		  	sauce.dislikes-1;
-		}
-		sauce
-		  .save()
-		  .then((sauce) => res.status(200).json({sauce}))
-		  .catch((error) => res.status(400).json({ error: error }));
-	  })
-  };
 
