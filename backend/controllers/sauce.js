@@ -23,9 +23,11 @@ exports.getOneSauce = (req, res, next) => {
 
 // createSauce
 
+// createSauce
 exports.createSauce = (req, res, next) => {
 	req.body.sauce = JSON.parse(req.body.sauce);
 	const url = req.protocol + "://" + req.get("host");
+	// console.log('createSauce is working')
 	const sauce = new Sauce({
 		userId: req.body.sauce.userId,
 		name: req.body.sauce.name,
@@ -33,12 +35,20 @@ exports.createSauce = (req, res, next) => {
 		description: req.body.sauce.description,
 		mainPepper: req.body.sauce.mainPepper,
 		imageUrl: url + "/images/" + req.file.filename,
-		heat: req.body.sauce.heat,	
-	});
-	sauce.save()
-	.then(() => {res.status(201).json({ message: "Sauce saved successfully"});
+		heat: req.body.sauce.heat,
+		
 	})
-	.catch((error) => {res.status(400).json({ error: error,})
+	// console.log(sauce);
+	sauce.save()
+	.then(() =>{
+		res.status(201).json({
+			message: "Sauce saved successfully",
+		});
+	})
+	.catch((error) =>{
+		res.status(400).json({
+			error: error,
+		})
 	})
 }
 
@@ -106,10 +116,10 @@ exports.modifySauce = (req, res, next) => {
 
 	Sauce.findOne({_id: req.params.id})
 		.then((sauce) => {
-			// if(sauce.userId !== req.auth.userId){
-			// 	res.status(403).json({message: "Unauthorised"})
-			// 	return;
-			// }
+			if(sauce.userId !== req.auth.userId){
+				res.status(403).json({message: "Unauthorised"})
+				return;
+			}
 			const filename = sauce.imageUrl.split("/images/")[1];
 			if(req.file){
                 fs.unlink(`images/${filename}`, (error) => {

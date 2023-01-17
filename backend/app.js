@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require("path");
+const helmet = require("helmet");
 var dotenv = require('dotenv');
 dotenv.config();
 const rateLimit = require('express-rate-limit')
@@ -9,11 +10,18 @@ const rateLimit = require('express-rate-limit')
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
+// INSTALL HELMET
+
 
 const app = express();
+app.use(helmet());
+app.use((req, res, next) => {
+  res.removeHeader("Cross-Origin-Embedder-Policy");
+  next();
+});
 
 
-mongoose.connect('mongodb+srv://' + process.env.MONGO_USERNAME + ':' + process.env.MONGO_PASSWORD + '@cluster0.gtwrqo6.mongodb.net/test')
+mongoose.connect('mongodb+srv://' + process.env.MONGO_USERNAME + ':' + process.env.MONGO_PASSWORD + '@' + process.env.MONGO_HOST + '/' + process.env.MONGO_DATABASE_NAME)
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
   })
