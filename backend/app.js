@@ -2,6 +2,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require("path");
+var dotenv = require('dotenv');
+dotenv.config();
 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
@@ -10,7 +12,7 @@ const sauceRoutes = require('./routes/sauce');
 const app = express();
 
 
-mongoose.connect('mongodb+srv://jade:firstone@cluster0.gtwrqo6.mongodb.net/test')
+mongoose.connect('mongodb+srv://' + process.env.MONGO_USERNAME + ':' + process.env.MONGO_PASSWORD + '@cluster0.gtwrqo6.mongodb.net/test')
   .then(() => {
     console.log('Successfully connected to MongoDB Atlas!');
   })
