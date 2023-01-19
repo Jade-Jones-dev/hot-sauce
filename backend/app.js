@@ -10,11 +10,9 @@ const rateLimit = require('express-rate-limit')
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
-// INSTALL HELMET
-
-
 const app = express();
 app.use(helmet());
+
 app.use((req, res, next) => {
   res.removeHeader("Cross-Origin-Embedder-Policy");
   next();
@@ -33,7 +31,6 @@ mongoose.connect('mongodb+srv://' + process.env.MONGO_USERNAME + ':' + process.e
 
 
 app.use((req, res, next) => {
-  // res.status(200).json({error: error})
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Access-Control-Allow-Headers",
@@ -46,7 +43,7 @@ app.use((req, res, next) => {
     next();
   });
 
-  const apiLimiter = rateLimit({
+const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers

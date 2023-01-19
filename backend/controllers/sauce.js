@@ -22,12 +22,9 @@ exports.getOneSauce = (req, res, next) => {
 };
 
 // createSauce
-
-// createSauce
 exports.createSauce = (req, res, next) => {
 	req.body.sauce = JSON.parse(req.body.sauce);
 	const url = req.protocol + "://" + req.get("host");
-	// console.log('createSauce is working')
 	const sauce = new Sauce({
 		userId: req.body.sauce.userId,
 		name: req.body.sauce.name,
@@ -35,10 +32,8 @@ exports.createSauce = (req, res, next) => {
 		description: req.body.sauce.description,
 		mainPepper: req.body.sauce.mainPepper,
 		imageUrl: url + "/images/" + req.file.filename,
-		heat: req.body.sauce.heat,
-		
+		heat: req.body.sauce.heat,	
 	})
-	// console.log(sauce);
 	sauce.save()
 	.then(() =>{
 		res.status(201).json({
