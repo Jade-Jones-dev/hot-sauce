@@ -18,8 +18,8 @@ schema
 exports.signup = (req, res, next) => {
   if(!schema.validate(req.body.password)){
     return res.status(401).json({
-      message:"Your password must be a minimum of 8 characters and include both upper and lowercase letters, no spaces and 2 digits"
-    })
+      error: new Error("Your password must be a minimum of 8 characters and include both upper and lowercase letters, no spaces and 2 digits"),
+    });
   } else{
     bcrypt.hash(req.body.password, 10).then(
       (hash) => {
