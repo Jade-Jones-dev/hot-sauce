@@ -1,6 +1,6 @@
 # Hot Sauce
 
-Hot Sauce is a blazingly hot and spicy web application that allows users to share and discover the spiciest content on the internet. Whether it's the hottest memes, fiery videos, or scorching blog posts, Hot Sauce is the place to heat things up! This repository contains the source code for the Hot Sauce web application.
+Hot Sauce is a blazingly hot and spicy web application that allows users to share and discover the spiciest content on the internet. Hot Sauce is the place to heat things up! This repository contains the source code for the Hot Sauce web application.
 
 ## Table of Contents
 
@@ -22,15 +22,7 @@ Hot Sauce comes with a range of spicy features:
 
 3. **Spice Rating**: Users can rate the spiciness of the content they consume, adding a sense of heat to the platform.
 
-4. **Trending Content**: The hottest and spiciest content will be showcased as trending, bringing more heat to the top.
-
-5. **Spice Categories**: Content is organized into different spice categories for easy discovery.
-
-6. **Search and Filter**: Users can search for specific content or filter content based on spiciness level or category.
-
-7. **Social Sharing**: Share the hottest content on other social media platforms to spread the heat.
-
-8. **User Interactions**: Users can like, comment, and share their favorite spicy posts.
+4. **User Interactions**: Users can like, comment, and share their favorite spicy posts.
 
 ## Getting Started
 
