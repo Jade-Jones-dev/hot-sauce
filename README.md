@@ -18,7 +18,7 @@ Hot Sauce comes with a range of spicy features:
 
 1. **User Authentication**: Users can sign up, log in, and manage their spicy content.
 
-2. **Content Upload**: Users can upload their spiciest content, including images, videos, and text posts.
+2. **Content Upload**: Users can upload their spiciest content.
 
 3. **Spice Rating**: Users can rate the spiciness of the content they consume, adding a sense of heat to the platform.
 
